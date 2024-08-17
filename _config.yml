@@ -11,7 +11,7 @@ name: 김현용
 title: Software Engineer
 email: hyeonyong737@gmail.com
 # email_title: Email (Email title override)
-# phone: Your phone number (optional)
+phone: 010-7174-6930
 # phone_title: Phone (Phone title override)
 website: https://blog.naver.com/haku10_3
 
@@ -48,20 +48,19 @@ content:
     content:
       - layout: left
         title: 11번가
-        sub_title: 데이터 추천 개발팀 / Backend Engineer
+        sub_title: 검색/추천서비스개발 / Backend Engineer
         caption: 2023.07 ~ 현재
         link: https://www.11st.co.kr/
         quote: >
-          11번가 앱/웹 내 다양한 영역에서 사용하는 추천 서비스(상품,카테고리,기획전 등) 및 파이프라인 개발
+          11번가 앱/웹 내 다양한 영역에서 사용하는 검색/추천 서비스(상품,카테고리,기획전 등) 및 추천 데이터 파이프라인 개발
         description: | # this will include new lines to allow paragraphs #  MAU 750, 많은 영역에서 사용하는 추천 서비스를 안정적으로 운영할수 있도록 기여
-          __추천 시스템 신규 운영 및 신규 api 개발__
-          - 신규 추천 영역 개발 및 기존 추천 모델에 대한 A/B 테스트 진행
+          __검색/추천 시스템 신규 운영 및 신규 api 개발__
+          - 검색 서비스 개발 및 운영 / 추천 신규 영역 개발 및 추천 시스템 운영
           
           __추천 시스템 레거시 개선__
           - 프로젝트 버전 마이그레이션 및 코드 정리
             - jdk 8 -> 21
             - spring boot 2.1.2 -> 3.2.3
-          - api서버 추천 모델별 분리작업 및 kubernetes 기반 운영 마이그레이션 진행중
           
           __장애 원인 분석 (23.09)__
           - 갤럭시 Z플립5 사전판매 라이브 방송 대용량 트래픽으로 인한 서버 hang 상태 장애 원인 분석
@@ -79,11 +78,11 @@ content:
           
           __Redis, Kafka 통합 관리도구 개발__
           - 분리망 접근과 CLI 환경의 불편함을 해소하기 위해, Redis와 Kafka 데이터를 확인할 수 있는 웹 기반 통합 관리 도구를 개발, 기존 대비 <mark>업무 효율을 80% 향상</mark>
-          - 자동화 배치 성능 개선
-            - no-offset 기반 reader를 구현하여 reader속도를 획기적으로 개선
 
-          __카탈로그 속성 자동화 매칭 도구 개발__
-          - 기존에 인력으로 운영 되는 업무의 일부분을 형태소 분석기와 패턴 매칭을 이용하여 카탈로그 이름에서 속성을 자동으로 추출하고 매칭하는 도구를 개발
+          __카탈로그 속성 자동화 매칭 배치 개발__
+          - 기존에 인력으로 운영 되는 업무의 일부분을 형태소 분석기와 패턴 매칭을 이용하여 카탈로그 이름에서 속성을 자동으로 추출하고 매칭하는 배치 개발
+          - 자동화 배치 성능 개선
+            - no-offset 기반 reader를 직접 구현하여 reader속도를 기존 대비 약 60퍼 개선
           
           __배치 모니터링도구 개발__
           - 배치 병목 현상 원인을 파악하기 위해 코드 수정 및 재배포의 번거로움 없이, pointcut을 JVM 옵션 혹은 환경변수로 외부에서 주입받아 모니터링할 수 있는 도구를 개발하여 팀 전체 업무 효율 향상
