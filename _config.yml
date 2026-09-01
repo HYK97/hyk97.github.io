@@ -8,7 +8,7 @@ version: 2
 
 # Personal info
 name: 김현용
-title: Software Engineer
+title: Backend Engineer
 email: hyeonyong737@gmail.com
 # email_title: Email (Email title override)
 phone: 010-7174-6930
@@ -19,7 +19,7 @@ darkmode: false
 
 # Social links
 
-github_username:  HYK97
+github_username: HYK97
 linkedin_username: 현용-김-40a33b25b
 
 
@@ -37,65 +37,123 @@ linkedin_username: 현용-김-40a33b25b
 # about_title: About Me (Use this to override about section title)
 about_profile_image: images/profile.jpeg
 about_content: | # this will include new lines to allow paragraphs
-  - Java와 Spring을 기반으로 한 1년 차 서버 백엔드 개발자입니다. 현재 MAU 750만 명의 커머스 서비스에서 사용자가 더욱 편리하게 쇼핑할 수 있도록 추천 시스템 개발에 참여하고 있습니다. 
+  - Java와 Spring을 기반으로 한 3년 차 서버 백엔드 개발자입니다. MAU 750만 명의 커머스 서비스에서 추천 시스템(1년)을 거쳐, 현재 대규모 트래픽 검색 플랫폼의 성능과 신뢰성, 관측성을 개선하고 있습니다.
+  - 스레드 모델 교체(Virtual Thread), 실시간 로그 분석 파이프라인 단독 구축, 라이브러리 내부까지 파고드는 장애 원인 분석이 대표적인 작업이며, 측정으로 검증한 변경만 프로덕션에 배포하는 방식으로 일하고 있습니다.
   - 업무를 수행하며 발견한 비효율적이고 불편한 문제점들을 적극적으로 개선하여 팀원들로부터 신뢰를 얻고, 팀에 기여하는 개발자로 성장해 나가고 있습니다.
-  - 추천 서비스의 품질인 최신성, 연관도가 높은 추천데이터를 어떻게 유저에게 빠르게 전달할 수 있을까 고민하고 있습니다.
+  - 사용자에게 연관도 높은 검색과 추천 결과를 어떻게 빠르고 안정적으로 전달할 수 있을지 고민하고 있습니다.
   - 사내외 스터디에 적극적으로 참여하고 주도함으로써, 제가 알고 있는 지식을 공유하고 함께 성장하는 문화를 조성하는 데 기여하고자 노력하고 있습니다.
 
 content:
+  - title: Highlights
+    layout: text
+    content: | # 핵심 성과 요약 (검증된 정량만 기재)
+      __핵심 성과__
+      - __트래픽 부하 대응__ — Virtual Thread로 스레드 모델을 전환하고(JFR로 pinning 원인 파악, synchronized→ReentrantLock 교체, DB 커넥션 풀 50→150 조정) 동일 k6 시나리오 기준 <mark>3배 부하 P99 5,000ms+ → 12배 부하 P99 1,000ms 이내</mark> 달성, 기존 플랫폼 스레드풀(max 300)은 제거
+      - __실시간 모니터링 파이프라인 단독 구축 및 운영__ — Kafka Streams + StarRocks(OLAP)로 검색 로그를 <mark>피크 시간당 200만 건</mark> 규모로 집계하고, '검색 결과 없음(NR)'이나 광고 노출 급감 같은 이상 징후를 탐지해 Slack으로 알림
+      - __프로덕션 장애 원인 파악 및 대응__ — 서킷브레이커가 복구되지 않는 장애를 메트릭과 로그, 트레이스 교차 분석으로 <mark>spring-cloud-openfeign 라이브러리의 초기화 동시성 버그</mark>까지 추적해 찾아내고, 공식 저장소의 이슈와 수정 커밋을 확인한 뒤 임시 조치를 배포
+      - __JVM 성능 개선__ — JDK25 ScopedValue 전환과 Virtual Thread 세마포어 Bulkhead 전환을 async-profiler와 JFR로 검증하며 진행 — <mark>p99 18.8% 개선, GC CPU 2.5% 절감</mark>
+      - __핵심 API 부하 분리__ — 최대할인가 계산을 검색 응답 경로에서 분리하고 전용 API + TTL 캐시 + Fallback을 적용해 <mark>호출량 90% 감소, 평균 응답 300ms → 235ms</mark>
+
+      __핵심 역량__
+      - __JVM과 동시성__: Virtual Thread와 ScopedValue 전환 설계, GC 비교 검증(CMS vs G1), JFR, async-profiler, Pyroscope 프로파일링, 자료구조 기반 복잡도 개선(O(n×m)→O(n+m))
+      - __신뢰성 엔지니어링__: CircuitBreaker, Bulkhead, Fallback 설계, 장애 분석과 회고 다수 주도(라이브러리 동시성 버그, 커넥션풀 포화, Feign hanging) — 원인 파악부터 재발 방지까지
+      - __실시간 데이터와 관측성__: Kafka Streams 윈도우 집계와 스트림 조인, StarRocks OLAP, Prometheus, Loki, Tempo, Grafana 통합 운영
+      - __플랫폼과 운영 자동화__: A/B 실험 플랫폼, 운영 트래픽 복제(Traffic Shadowing) 시스템, 운영 어드민 풀스택(Kotlin+React) — 검증 기반 인프라 축소 운영
+
   - title: Experience
     layout: list
     content:
       - layout: left
         title: 11번가
-        sub_title: 검색/추천서비스개발 / Backend Engineer
-        caption: 2023.07 ~ 현재
+        sub_title: 검색 서비스 개발 / Backend Engineer
+        caption: 2024.07 ~ 현재
         link: https://www.11st.co.kr/
         quote: >
-          11번가 앱/웹 내 다양한 영역에서 사용하는 검색/추천 서비스(상품,카테고리,기획전 등) 및 추천 데이터 파이프라인 개발
-        description: | # this will include new lines to allow paragraphs #  MAU 750, 많은 영역에서 사용하는 추천 서비스를 안정적으로 운영할수 있도록 기여
-          __검색/추천 시스템 신규 운영 및 신규 api 개발__
-          - 검색 서비스 개발 및 운영 / 추천 신규 영역 개발 및 추천 시스템 운영
-          
-          __추천 시스템 레거시 개선__
-          - 프로젝트 버전 마이그레이션 및 코드 정리
-            - jdk 8 -> 21
-            - spring boot 2.1.2 -> 3.2.3
-          
-          __장애 원인 분석 (23.09)__
-          - 갤럭시 Z플립5 사전판매 라이브 방송 대용량 트래픽으로 인한 서버 hang 상태 장애 원인 분석
-          - 장애 재현 및 로그 분석을 통해서 원인을 파악하고 재발 방지를 위한 방법과 관련 내용을 문서화 하여 팀내 공유
-          - FeignAutoConfiguration 기본 설정에 의한 http connection leak (ConnectionRequestTimeout, SocketTimeout 및 resource 반환 코드 점검) 문제로 확인
-  
-          __추천 admin staging 환경 구성__
-          - 데이터 검증, 성능 테스트, QA 등의 작업을 안전하게 처리할 수 있는 샌드박스 환경을 구성, 이를 통해 릴리즈 배포 전에 확인하여 안정적인 운영기반 마련
-          
-          __추천 mab api 성능 테스트 및 가이드 작성__
-          - API 서버 성능 테스트를 통해 셔플할 상품의 적정 데이터 개수를 산정하고, 사용법에 대한 가이드를 제공
-          
-          __추천 배치 속도 개선__
-          - Hive에서 추천 데이터를 Paging Query로 가져와 Elasticsearch에 적재하는 배치 작업의 속도를 단계별로 모니터링하여 병목 지점을 파악한 후, Paging -> CursorReader로 변경하여 배치 속도를 <mark>98% 이상 개선 (5시간 -> 5분 이내)</mark>
-          
-          __Redis, Kafka 통합 관리도구 개발__
-          - 분리망 접근과 CLI 환경의 불편함을 해소하기 위해, Redis와 Kafka 데이터를 확인할 수 있는 웹 기반 통합 관리 도구를 개발, 기존 대비 <mark>업무 효율을 80% 향상</mark>
+          PC 통합검색 리스팅 서버 및 주변 시스템 개발과 운영 — 성능, 신뢰성, 실험, 기능 전반
+        description: | # this will include new lines to allow paragraphs
+          __Virtual Thread 전환 및 JDK25 성능 개선__
+          - 이벤트성 트래픽이 몰릴 때 스레드풀 고갈로 응답 시간이 치솟는 문제를 k6로 재현해 수치로 확인 (3배 부하에서 P99 5,000ms 초과)
+          - JFR로 synchronized pinning 지점을 찾아 ReentrantLock으로 교체하고, DB 커넥션 풀을 50→150으로 재조정, 기존 플랫폼 스레드풀(core 100/max 300) 제거 → <mark>12배 부하에서도 P99 1,000ms 이내 유지</mark>
+          - JDK25 도입 사전 검증: ThreadLocal→ScopedValue 전환, Jackson 객체 풀 제한, 세마포어 Bulkhead — JMH와 async-profiler로 <mark>p99 18.8% 개선</mark>을 확인한 뒤 반영 (JDK/빌드 인프라 업그레이드는 팀 협업)
+          - 속성 필터 매칭의 이중 루프를 HashMap 인덱싱 구조로 재설계 — 복잡도 <mark>O(n×m) → O(n+m)</mark>, 루프 안에서 생기던 임시 객체 제거
 
-          __카탈로그 속성 자동화 매칭 배치 개발__
-          - 기존에 인력으로 운영 되는 업무의 일부분을 형태소 분석기와 패턴 매칭을 이용하여 카탈로그 이름에서 속성을 자동으로 추출하고 매칭하는 배치 개발
-          - 자동화 배치 성능 개선
-            - no-offset 기반 reader를 직접 구현하여 reader속도를 기존 대비 약 60퍼 개선
-          
-          __배치 모니터링도구 개발__
-          - 배치 병목 현상 원인을 파악하기 위해 코드 수정 및 재배포의 번거로움 없이, pointcut을 JVM 옵션 혹은 환경변수로 외부에서 주입받아 모니터링할 수 있는 도구를 개발하여 팀 전체 업무 효율 향상
-          
-          __추천 admin 리팩토링__
-          - interceptor와 annotation를 활용하여 중복되는 유저 인증 로직 제거
-          - 유저 정보 획득 로직 간소화를 통해 인증 서버 api <mark>호출 빈도 50% 감소</mark>
-          - ajax 예외 공통 모듈을 만들어 모든 페이지가 같은 예외 알림을 노출시키고 HTTP 상태 코드별로 일관성있는 동작을 하도록 개선
-  
-          __추천 api 500 error 원인 파악 및 수정__
-          - 지속적으로 발생하는 NullPointerException 등 예외의 원인을 파악하고 비즈니스 요구사항에 맞도록 핸들링
+          __검색 로그 실시간 분석 및 모니터링 파이프라인 (설계부터 구축, 운영까지 단독 수행)__
+          - 라벨 조합이 많아 Prometheus로는 집계하기 어려웠던 '검색 결과 없음(NR)' 키워드 순위와 영역별 노출/클릭/CTR 집계를 Kafka Streams(윈도우 집계, 노출/클릭 스트림 조인) + StarRocks(OLAP)로 해결 — <mark>피크 시간당 200만 건</mark> 처리
+          - 배포 없이 Rule 메시지 발행만으로 수집 대상을 바로 변경할 수 있도록 설계 (Rule 로딩에 실패해도 일부 Rule만으로 계속 동작)
+          - 사용자 기기의 시계 오류로 미래 시간대 집계가 생기는 문제를 서버 수신 시각 기준 집계로 바꿔 해결하고, 스팸 키워드 인코딩 때문에 집계가 누락되던 문제(유니크 키 길이 초과 → null 적재)도 찾아 수정
+          - 클러스터 구성부터 롤링 배포와 배포 검증, 지표 연동(JMX→Prometheus)까지 스크립트로 자동화하고, Grafana 대시보드와 Slack 알림 구성
+
+          __프로덕션 장애 원인 파악 및 대응__
+          - 서킷브레이커가 복구되지 않는 장애: 메트릭과 로그, 트레이스를 교차 분석해(재시도는 30초마다 전부 실패하는데 외부 응답은 모두 정상) 네트워크와 외부 서버 문제를 배제하고 애플리케이션 내부로 범위를 좁힘 → <mark>spring-cloud-openfeign의 초기화 동시성 버그(ArrayList에 동시에 add 되면서 null 요소가 남는 문제)</mark>임을 확인
+          - 전체 서버 로그를 조사해 같은 결함이 배포 때마다 발생하고 있었음을 확인하고, 라이브러리 공식 저장소에서 동일 이슈와 수정 커밋, 최신 릴리스에 아직 포함되지 않은 사실까지 추적 → 미리 초기화(eager init)하는 임시 조치 배포
+          - 특정 서버 한 대만 응답이 느려지는 장애: 프로파일 비교(diff flame graph)로 HTTP 커넥션 풀 포화(<mark>경합 4.5배</mark>)가 원인임을 확인
+          - 분산 IP 스크래핑으로 인한 부하 장애: 정렬 로직의 정규식 병목을 제거하고 응답을 캐싱해 <mark>API 호출 93% 감소</mark>
+
+          __핵심 API 부하 분리__
+          - 최대할인가 계산을 검색 응답 경로에서 분리하고 전용 API(도메인별 Decorator 패턴)와 TTL 캐시+워밍+Fallback을 적용 — <mark>호출량 90% 감소, 평균 응답 300ms → 235ms</mark>, 모니터링 지표(Micrometer)도 함께 구축
+
+          __검색 모니터링과 관측성 구축__
+          - Tempo, Loki, Grafana, WhaTap을 통합한 모니터링 구축 — MDC 기반 요청 추적 로그, 외부 API 응답 시간 분포 지표, timeout 로그 분리를 더해 운영 이슈 탐지 시간을 크게 단축
+          - 상시 프로파일링을 에이전트 방식에서 SDK 방식으로 전환 — root 권한 없이 동작하고, 트레이스와 프로파일을 연결해 볼 수 있도록 개선
+
+          __실험과 운영 플랫폼 풀스택__
+          - A/B 실험 플랫폼 개선: 외부 실험 플랫폼 API 의존을 KV 캐시로 점진적으로 걷어내고 트래픽 배분, 시뮬레이터, 실험 아카이브 구축 — 랭킹과 노출 실험 <mark>20건 이상 세팅 및 운영</mark> (랭킹 파라미터는 검색품질팀과 협업)
+          - 운영 트래픽 복제(Traffic Shadowing) 시스템: 운영 트래픽을 복제해 새 구성에 그대로 흘려보내며 검증하는 도구를 어드민부터 에이전트까지 직접 구축 — 인프라 축소 전 안전성 검증 수단으로 활용
+          - 검색 운영 어드민(Kotlin/Spring + React)을 단독 개발, 사번 기반 인증으로 전환하고 운영 API 디버그 모드는 사내 IP 화이트리스트로 접근 제한
+
+          __검색 서비스 및 기능 개발__
+          - 통합검색 페이지 하이브리드 개편 — 176개 파일에 걸친 구조 개선을 단계적으로 진행
+          - 오픈딜, 마트 등 전문관(버티컬) 검색 개발, 검색엔진 전환 과정에서 <mark>레거시 코드 약 1,900줄 제거</mark>
+          - 운영 DB 전면 교체에 맞춰 여러 서비스 저장소를 함께 전환 — Oracle 전용 함수 마이그레이션, 테스트 DB 검증 후 단계적 적용
+          - 신규 검색 탭 API 구축(탭 헤더 병렬 호출과 캐시 적용), SEO 크롤러 대응 noindex 판정 API 개발, URL 인코딩 처리 표준화
+
+          __개발 생산성과 품질__
+          - 검색 디버깅용 Chrome Extension을 직접 개발 — 검색 응답을 후킹해 랭킹 점수를 화면에 바로 표시, 팀 공용 디버깅 도구로 운영
+          - Java Collections의 뷰와 얕은 복사에서 비롯된 결함(subList 수정 시 ConcurrentModificationException 등)을 방어적 복사로 근본부터 수정
+          - 빌드와 배포 후 테스트가 자동 실행되도록 파이프라인 개선
+
+      - layout: left
+        title: 11번가
+        sub_title: 추천 서비스 개발 / Backend Engineer
+        caption: 2023.07 ~ 2024.07 (인턴 2023.05 ~ 2023.07)
+        link: https://www.11st.co.kr/
+        quote: >
+          추천 API, 배치, 어드민, 인프라 개발과 운영. 인턴으로 합류 후 정규 전환, 2025.01까지 유지보수 병행
+        description: | # this will include new lines to allow paragraphs
+          __Elasticsearch 성능 및 안정성 개선__
+          - GC 비교 검증 후 G1 채택(CMS vs G1), 노드 역할 분리, 버전업(7.9.1→8.11.3, 약 5천만 건 색인) — <mark>노드 CPU 85% → 37%, ReadTimeout 50% 감소</mark>
+          - ES 커스텀 네이티브 플러그인의 메이저 버전 마이그레이션(ES 7→8, JDK 11→21)을 직접 수행
+
+          __추천 서비스 안정성과 품질 개선__
+          - hystrix → resilience4j 마이그레이션, 피크 트래픽 기준으로 커넥션 풀 크기를 계산해 분리 — 추천 품질 개선과 함께 <mark>ReadTimeout 85% 감소</mark>
+          - 프로젝트 버전 마이그레이션 및 코드 정리 (JDK 8 → 21, Spring Boot 2.1.2 → 3.2.3, maven → gradle)
+          - 지속적으로 발생하는 NullPointerException 등 예외의 원인을 파악하고 비즈니스 요구사항에 맞도록 핸들링 — 개선 전 대비 error <mark>응답률 99.5% 감소</mark>
             - 위 과정에서 발생한 로그 [Stacktrace 누락 관련 이슈](https://velog.io/@ddh963963/JVM-Stacktrace-Optimizing)에 대해서 직접 테스트 후(jvm optimization) 결과와 해결 방법을 팀에 공유
-          - 개선 전 대비 error <mark>응답률 99.5% 감소</mark>
+
+          __장애 원인 분석 (2023.09)__
+          - 갤럭시 Z플립5 사전판매 라이브 방송 대용량 트래픽으로 인한 서버 hang 상태 장애 원인 분석 — 장애 재현 및 로그 분석으로 원인을 파악하고, 재발 방지 방법과 관련 내용을 문서화하여 팀내 공유
+          - Feign 기본 설정에 의한 HTTP connection leak(ConnectionRequestTimeout, SocketTimeout 및 resource 반환 코드 점검) 문제로 확인 → 명시적 timeout 강제
+          - 홈 영역 메타 서비스의 OOM 장애 힙덤프 분석 — 로컬 캐시가 TTL 만료 후에도 힙에서 제거되지 않아 발생한 문제임을 확인하고 off-heap 캐시 전환 제안
+
+          __배치 자동화 및 업무 효율화__
+          - 카탈로그 속성 자동화 매칭 배치 개발: 기존에 인력으로 운영되던 업무를 형태소 분석기와 패턴 매칭으로 카탈로그 이름에서 속성을 자동 추출해 매칭 (약 2.4억 건 조회 규모) — 수작업 <mark>18시간 → 1시간</mark>
+            - no-offset 기반 reader를 직접 구현하여 reader 속도를 기존 대비 약 60% 개선
+          - Hive에서 추천 데이터를 Paging Query로 가져와 Elasticsearch에 적재하는 배치의 병목 지점을 단계별 모니터링으로 파악, Paging → CursorReader 전환으로 배치 속도 <mark>98% 이상 개선 (5시간 → 5분 이내)</mark>
+          - 배치 모니터링 도구 개발: 코드 수정이나 재배포 없이 pointcut을 JVM 옵션/환경변수로 외부에서 주입받아 병목을 모니터링 — 분석 업무 <mark>10분 → 10초</mark>, 팀 전체 업무 효율 향상
+          - Redis, Kafka 통합 관리도구 개발: 분리망 접근과 CLI 환경의 불편함을 웹 기반 도구로 해소 — 조회 업무 <mark>1분 20초 → 10초</mark>, 기존 대비 업무 효율 80% 향상
+
+          __신규 추천 영역 및 대고객 서비스 개발__
+          - 신규 추천 영역 상품 ETL 파이프라인 개발 (Hadoop → 배치 → Elasticsearch, 증분/전체 색인 <mark>총 약 5천만 건</mark>)
+          - 슈팅배송, OOTD 추천 API 개발
+          - 추천 MAB(Multi-Armed Bandit) API 성능 테스트로 셔플할 상품의 적정 데이터 개수를 산정하고, 사용법에 대한 가이드를 제공
+
+          __운영 환경 및 어드민 개선__
+          - 추천 admin staging 환경 구성 — 데이터 검증, 성능 테스트, QA 작업을 릴리즈 배포 전에 안전하게 처리할 수 있는 샌드박스 환경으로 안정적인 운영 기반 마련
+          - 추천 admin 리팩토링: interceptor와 annotation을 활용해 중복 유저 인증 로직 제거, 유저 정보 획득 간소화로 인증 서버 API <mark>호출 빈도 50% 감소</mark>, ajax 예외 공통 모듈로 HTTP 상태 코드별 일관성 있는 동작 개선
+          - 모니터링 설정 코드화: APM 에이전트와 Redis/ES 쿼리 추적 설정을 스크립트로 버전 관리, 배치 모니터링 AOP 도입
+
+          __벡터 검색 기술 검토 (TF, 2024)__
+          - Vector DB 6종 비교 분석(라이선스, 하이브리드 검색, 필터, HNSW, 샤딩)과 kNN 색인 방식(Exact vs Approximate) 검토로 기술 선정 수행
 
   - title: Projects # Title for the section
     layout: list # Type of content section (list/text)
@@ -105,11 +163,11 @@ content:
         link: https://honey-wisteria-a29.notion.site/Electronics-used-trading-market-24e6d21dde514c478bb5eee583dae0d4?pvs=74
         link_text: 상세 노션
         additional_links:
-          - title:  중고 장터
+          - title: 중고 장터
             icon: fab fa-github
             url: https://github.com/f-lab-edu/electronics-used-trading-market
         quote: >
-         중고 전자 거래 프로젝트
+          중고 전자 거래 프로젝트
         description: | # this will include new lines to allow paragraphs
           - [6,700 만 건 상품 검색 기능을 MySQL 인덱스 튜닝 및 ELK 도입을 통해 기존 검색 속도보다 약 **90%** 이상 개선](https://www.notion.so/Electronics-used-trading-market-24e6d21dde514c478bb5eee583dae0d4?pvs=21)
           - [애플리케이션 배포 시 발생하는 다운타임을 롤링 배포를 통해 무중단 상태로 개선]
@@ -117,16 +175,24 @@ content:
           - [Redis, MySQL 조회 성능 및 가용성 확보를 위해 Cluster와 Replication를 통해 분산 및 HA 환경 구성](https://github.com/f-lab-edu/electronics-used-trading-market/issues/62)
           - 실시간 채팅 API 개발
 
+  - title: Awards
+    layout: text
+    content: |
+      - 2025 상반기 그랜드 십일절 <mark>우수상</mark>, 2025 하반기 그랜드 십일절 <mark>최우수상</mark>
+
   - title: Skill
     layout: list
     content:
       - layout: left
         title: Lang & Framework
         description: |
-          Java, Spring Boot, MyBatis, JPA
-      - title: Databases
-        description: | 
-          Mysql, Redis, Oracle, Elasticsearch
+          Java(8~25), Kotlin, Spring Boot(2.1~4.1), Spring Cloud OpenFeign, Resilience4j, JPA, MyBatis
+      - title: Data & Cache
+        description: |
+          Kafka, Kafka Streams, Elasticsearch, Redis, Caffeine, MySQL, Oracle, StarRocks
+      - title: Observability & Testing
+        description: |
+          Grafana, Prometheus, Loki, Tempo, Pyroscope, WhaTap, JFR, async-profiler, k6, GoReplay
       - title: ETC
         description: |
           Docker, Git, Jenkins, Nginx
@@ -144,9 +210,9 @@ sass:
   style: compressed
 
 plugins:
- - jekyll-seo-tag
+  - jekyll-seo-tag
 
-exclude : [
+exclude: [
   "Gemfile",
   "Gemfile.lock",
   "node_modules",
@@ -157,4 +223,4 @@ exclude : [
   "lib/",
   "scripts/",
   "docker-compose.yml",
-  ]
+]
