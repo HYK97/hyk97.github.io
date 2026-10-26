@@ -37,28 +37,25 @@ linkedin_username: 현용-김-40a33b25b
 # about_title: About Me (Use this to override about section title)
 about_profile_image: images/profile.jpeg
 about_content: | # this will include new lines to allow paragraphs
-  - Java와 Spring을 기반으로 한 3년 차 서버 백엔드 개발자입니다. MAU 750만 명의 커머스 서비스에서 추천 시스템(1년)을 거쳐, 현재 대규모 트래픽 검색 플랫폼의 성능과 신뢰성, 관측성을 개선하고 있습니다.
-  - 스레드 모델 교체(Virtual Thread), 실시간 로그 분석 파이프라인 단독 구축, 라이브러리 내부까지 파고드는 장애 원인 분석이 대표적인 작업이며, 측정으로 검증한 변경만 프로덕션에 배포하는 방식으로 일하고 있습니다.
-  - 업무를 수행하며 발견한 비효율적이고 불편한 문제점들을 적극적으로 개선하여 팀원들로부터 신뢰를 얻고, 팀에 기여하는 개발자로 성장해 나가고 있습니다.
-  - 사용자에게 연관도 높은 검색과 추천 결과를 어떻게 빠르고 안정적으로 전달할 수 있을지 고민하고 있습니다.
-  - 사내외 스터디에 적극적으로 참여하고 주도함으로써, 제가 알고 있는 지식을 공유하고 함께 성장하는 문화를 조성하는 데 기여하고자 노력하고 있습니다.
+  - Java, Kotlin과 Spring으로 일하는 백엔드 개발자입니다. MAU 750만 명 규모의 커머스 서비스에서 추천 시스템을 1년 개발했고, 지금은 PC 통합검색 리스팅 서버의 성능과 신뢰성, 관측성을 맡고 있습니다.
+  - 상용 트래픽을 녹화해 재생하는 시험 환경을 만들어 스레드 모델을 비교 실험했고, 실시간 검색 로그 분석 파이프라인을 혼자 설계해 운영하고 있습니다. 장애가 나면 스레드 덤프와 라이브러리 소스까지 내려가 원인을 찾습니다.
 
 content:
   - title: Highlights
     layout: text
-    content: | # 핵심 성과 요약 (검증된 정량만 기재)
+    content: | # 핵심 성과 요약 (측정 조건을 함께 기재)
       __핵심 성과__
-      - __트래픽 부하 대응__ — Virtual Thread로 스레드 모델을 전환하고(JFR로 pinning 원인 파악, synchronized→ReentrantLock 교체, DB 커넥션 풀 50→150 조정) 동일 k6 시나리오 기준 <mark>3배 부하 P99 5,000ms+ → 12배 부하 P99 1,000ms 이내</mark> 달성, 기존 플랫폼 스레드풀(max 300)은 제거
-      - __실시간 모니터링 파이프라인 단독 구축 및 운영__ — Kafka Streams + StarRocks(OLAP)로 검색 로그를 <mark>피크 시간당 200만 건</mark> 규모로 집계하고, '검색 결과 없음(NR)'이나 광고 노출 급감 같은 이상 징후를 탐지해 Slack으로 알림
-      - __프로덕션 장애 원인 파악 및 대응__ — 서킷브레이커가 복구되지 않는 장애를 메트릭과 로그, 트레이스 교차 분석으로 <mark>spring-cloud-openfeign 라이브러리의 초기화 동시성 버그</mark>까지 찾아내고, 공식 저장소의 이슈와 수정 커밋을 확인한 뒤 임시 조치를 배포
-      - __JVM 성능 개선__ — JDK25 ScopedValue 전환과 Virtual Thread 세마포어 Bulkhead 전환을 async-profiler와 JFR로 검증하며 진행 — <mark>p99 18.8% 개선, GC CPU 2.5% 절감</mark>
-      - __핵심 API 부하 분리__ — 최대할인가 계산을 검색 응답 경로에서 분리하고 전용 API + TTL 캐시 + Fallback을 적용해 <mark>호출량 90% 감소, 평균 응답 300ms → 235ms</mark>
+      - __스레드 모델 용량 실험__: 상용 트래픽 녹화본을 검증 서버 1대에 계단식으로 재생해 스레드 모델 구성 4가지를 비교했습니다. 처리 한계는 옛 운영 설정을 재구성한 구성의 148 TPS에서 Virtual Thread와 세마포어 구성의 <mark>287 TPS(약 1.9배)</mark>로 올랐고, 약 220 TPS에서 P99는 <mark>2.68초에서 0.50초</mark>로 줄었습니다. 이 결과를 근거로 <mark>검색 API 서버를 50% 감축</mark>했습니다.
+      - __라이브러리 내부 동시성 버그 2건 원인 규명__: 서킷브레이커가 복구되지 않던 장애에서는 <mark>spring-cloud-openfeign 초기화 경합</mark>을, 일부 서버가 알람 없이 "결과 없음"만 반환하던 장애에서는 <mark>jasypt 락 순서 교착</mark>을 찾아 조치했습니다.
+      - __실시간 검색 로그 분석 파이프라인 단독 구축__: Kafka Streams와 StarRocks로 검색 노출과 클릭 로그를 실시간 집계하고, '검색 결과 없음' 급증이나 영역별 노출 급감 같은 이상 징후를 Slack으로 알립니다.
+      - __외부 호출 격리 재설계__: 공용 HTTP 커넥션 풀 하나를 <mark>도메인별 6개</mark>로 나누고 서킷브레이커를 클라이언트 단위로 분리해, 부가 기능 장애가 메인 검색 서킷까지 열지 않도록 했습니다.
+      - __최대할인가 API 분리__: 최대할인가 계산을 검색 응답 경로에서 떼어 내 전용 API, TTL 캐시, Fallback을 적용했고 <mark>호출량이 약 90% 줄었습니다</mark>.
 
       __핵심 역량__
-      - __JVM과 동시성__: Virtual Thread와 ScopedValue 전환 설계, GC 비교 검증(CMS vs G1), JFR, async-profiler, Pyroscope 프로파일링, 자료구조 기반 복잡도 개선(O(n×m)→O(n+m))
-      - __신뢰성 엔지니어링__: CircuitBreaker, Bulkhead, Fallback 설계, 장애 분석과 회고 다수 주도(라이브러리 동시성 버그, 커넥션풀 포화, Feign hanging) — 원인 파악부터 재발 방지까지
-      - __실시간 데이터와 관측성__: Kafka Streams 윈도우 집계와 스트림 조인, StarRocks OLAP, Prometheus, Loki, Tempo, Grafana 통합 운영
-      - __플랫폼과 운영 자동화__: A/B 실험 플랫폼, 운영 트래픽 복제(Traffic Shadowing) 시스템, 운영 어드민 풀스택(Kotlin+React) — 충분한 검증을 거쳐 인프라를 축소 운영
+      - __JVM과 동시성__: Virtual Thread 전환, ZGC와 JFR 분석, async-profiler와 Pyroscope 프로파일링, 스레드 덤프 기반 교착 분석, 자료구조 기반 복잡도 개선(O(n×m) → O(n+m))
+      - __신뢰성__: CircuitBreaker, Bulkhead, Fallback 설계, 리틀 법칙과 상용 실측 피크를 이용한 동시성 상한 산정, 장애 원인 분석과 재발 방지
+      - __성능 검증 환경__: GoReplay 기반 상용 트래픽 녹화와 재생, 운영 트래픽 복제(Traffic Shadowing), 신구 경로 비교 하네스와 골든 테스트
+      - __실시간 데이터와 관측성__: Kafka Streams 윈도우 집계와 스트림 조인, StarRocks, Prometheus, Loki, Tempo, Grafana
 
   - title: Experience
     layout: list
@@ -69,48 +66,60 @@ content:
         caption: 2024.07 ~ 현재
         link: https://www.11st.co.kr/
         quote: >
-          PC 통합검색 리스팅 서버 및 주변 시스템 개발과 운영 — 성능, 신뢰성, 실험, 기능 전반
+          PC 통합검색 리스팅 서버와 주변 시스템의 개발과 운영. 성능, 신뢰성, 실험 플랫폼, 검색 기능을 맡고 있습니다.
         description: | # this will include new lines to allow paragraphs
-          __Virtual Thread 전환 및 JDK25 성능 개선__
-          - 이벤트성 트래픽이 몰릴 때 스레드풀 고갈로 응답 시간이 치솟는 문제를 k6로 재현해 수치로 확인 (3배 부하에서 P99 5,000ms 초과)
-          - JFR로 synchronized pinning 지점을 찾아 ReentrantLock으로 교체하고, DB 커넥션 풀을 50→150으로 재조정, 기존 플랫폼 스레드풀(core 100/max 300) 제거 → <mark>12배 부하에서도 P99 1,000ms 이내 유지</mark>
-          - JDK25 도입 사전 검증: ThreadLocal→ScopedValue 전환, Jackson 객체 풀 제한, 세마포어 Bulkhead — JMH와 async-profiler로 <mark>p99 18.8% 개선</mark>을 확인한 뒤 반영 (JDK/빌드 인프라 업그레이드는 팀 협업)
-          - 속성 필터 매칭의 이중 루프를 HashMap 인덱싱 구조로 재설계 — 복잡도 <mark>O(n×m) → O(n+m)</mark>, 루프 안에서 생기던 임시 객체 제거
+          __스레드 모델 전환과 용량 실험__
+          - 비동기 호출용 플랫폼 스레드풀을 걷어내고 Virtual Thread로 전환했습니다. JDK21에서 전환하면서 JFR로 synchronized pinning 지점을 찾아 ReentrantLock으로 바꿨습니다.
+          - 전환 효과를 다시 확인하려고 상용 녹화 트래픽을 50 TPS부터 850 TPS까지 계단식으로 재생하는 실험을 설계했습니다. 비즈니스 로직은 그대로 두고 스레드 모델, 풀 크기, Bulkhead 방식만 바꾼 구성 4가지를 비교했고, 한계 판정 기준과 중단 규칙은 실험 전에 정해 두었습니다.
+          - 서버 1대 기준으로 처리 한계는 옛 설정을 재구성한 구성의 148 TPS에서 <mark>287 TPS</mark>로 올랐습니다. 약 220 TPS에서 P99는 2.68초에서 0.50초로, JVM 스레드 수는 1,000~2,000개에서 약 106개로 줄었습니다.
+          - 설정을 하나씩 바꿔 보니 풀 크기를 키운 단계에서 +59%, 같은 풀 크기에서 Virtual Thread로 바꾼 단계에서 +20%가 늘었습니다. 스레드풀 방식과 세마포어 방식의 차이는 0~2%로 측정 오차 범위 안이었습니다.
+          - 한계 지점에서 CPU 사용률은 71~78%로 포화 상태가 아니었고, 요청당 컨텍스트 스위치는 오히려 Virtual Thread 쪽이 많았습니다. 처리 한계를 CPU가 아닌 다른 자원이 정한다는 점을 확인했습니다.
+          - 실험 결과로 서버 1대의 안정, 주의, 위험 구간과 평상시 및 이벤트 피크 운영 기준을 정리했고, 이를 근거로 <mark>검색 API 서버를 50% 감축</mark>했습니다.
+          - JDK25 도입 전에 ThreadLocal을 ScopedValue로 바꾸고 Jackson 객체 풀을 제한하는 변경을 async-profiler와 JFR로 확인한 뒤 반영했습니다.
+          - 속성 필터 매칭의 이중 루프를 HashMap 인덱싱으로 바꿔 복잡도를 <mark>O(n×m) → O(n+m)</mark>으로 낮추고, 루프 안에서 만들던 임시 객체를 없앴습니다.
 
-          __검색 로그 실시간 분석 및 모니터링 파이프라인 (설계부터 구축, 운영까지 단독 수행)__
-          - 라벨 조합이 많아 Prometheus로는 집계하기 어려웠던 '검색 결과 없음(NR)' 키워드 순위와 영역별 노출/클릭/CTR 집계를 Kafka Streams(윈도우 집계, 노출/클릭 스트림 조인) + StarRocks(OLAP)로 해결 — <mark>피크 시간당 200만 건</mark> 처리
-          - 배포 없이 Rule 메시지 발행만으로 수집 대상을 바로 변경할 수 있도록 설계 (Rule 로딩에 실패해도 일부 Rule만으로 계속 동작)
-          - 사용자 기기의 시계 오류로 미래 시간대 집계가 생기는 문제를 서버 수신 시각 기준 집계로 바꿔 해결하고, 스팸 키워드 인코딩 때문에 집계가 누락되던 문제(유니크 키 길이 초과 → null 적재)도 찾아 수정
-          - 클러스터 구성부터 롤링 배포와 배포 검증, 지표 연동(JMX→Prometheus)까지 스크립트로 자동화하고, Grafana 대시보드와 Slack 알림 구성
+          __상용 트래픽 녹화와 재생 환경 구축__
+          - 같은 요청을 원하는 속도로 반복 재생할 수 있도록 GoReplay 기반 녹화와 재생 환경을 설계하고, 녹화 에이전트와 재생 에이전트, 제어 화면을 개발했습니다.
+          - 상용 트래픽과 응답 크기를 실측해 녹화 디스크와 재생 회선 용량을 산정했고, 목표 부하에서 회선이 포화되지 않도록 재생 서버를 나누어 설계했습니다.
+          - 앞서 만든 운영 트래픽 복제(Traffic Shadowing) 도구는 어드민부터 에이전트까지 직접 구축했습니다. 설정 해시로 에이전트 재시작이 필요한 변경만 골라내고, heartbeat로 서버별 실행 상태를 자동으로 판정합니다.
 
-          __프로덕션 장애 원인 파악 및 대응__
-          - 서킷브레이커가 복구되지 않는 장애: 메트릭과 로그, 트레이스를 교차 분석해(재시도는 30초마다 전부 실패하는데 외부 응답은 모두 정상) 네트워크와 외부 서버 문제를 배제하고 애플리케이션 내부로 범위를 좁힘 → <mark>spring-cloud-openfeign의 초기화 동시성 버그(ArrayList에 동시에 add 되면서 null 요소가 남는 문제)</mark>임을 확인
-          - 전체 서버 로그를 조사해 같은 결함이 배포 때마다 발생하고 있었음을 확인하고, 라이브러리 공식 저장소에서 동일 이슈와 수정 커밋, 최신 릴리스에 아직 포함되지 않은 사실까지 추적 → 미리 초기화(eager init)하는 임시 조치 배포
-          - 특정 서버 한 대만 응답이 느려지는 장애: 프로파일 비교(diff flame graph)로 HTTP 커넥션 풀 포화(<mark>경합 4.5배</mark>)가 원인임을 확인
-          - 분산 IP 스크래핑으로 인한 부하 장애: 정렬 로직의 정규식 병목을 제거하고 응답을 캐싱해 <mark>API 호출 93% 감소</mark>
+          __외부 호출 격리 재설계__
+          - 호스트 단위 라우트가 공용 커넥션 풀 하나에 묶여 있던 구조를 검색엔진, 내부 API, AI, KV 등 <mark>도메인별 6개 풀</mark>로 나누고, 커넥션 정리 스레드를 33개에서 6개로 줄였습니다.
+          - 서킷브레이커 id와 Bulkhead id가 달라 facet 호출 장애가 본 검색 서킷을 열 수 있는 구조를 찾아내 서킷을 클라이언트 단위로 분리했습니다. 41개 클라이언트의 이름 규칙은 빌드 테스트로 강제합니다.
+          - Bulkhead 상한은 리틀 법칙과 상용 14일 실측 피크로 다시 계산했습니다. 5분 단위로 보면 59였던 동시성 피크가 30초 단위로는 103이어서, 집계 단위가 거칠어 생긴 과소 산정을 바로잡았습니다.
+          - 설정 키가 클라이언트 이름과 달라 적용되지 않던 Bulkhead 설정을 메트릭으로 찾아 정리했고, 타임아웃 없이 join하던 KV 조회를 타임아웃이 있는 실행기로 바꿨습니다.
 
-          __핵심 API 부하 분리__
-          - 최대할인가 계산을 검색 응답 경로에서 분리하고 전용 API(도메인별 Decorator 패턴)와 TTL 캐시+워밍+Fallback을 적용 — <mark>호출량 90% 감소, 평균 응답 300ms → 235ms</mark>, 모니터링 지표(Micrometer)도 함께 구축
+          __장애 원인 분석과 대응__
+          - 서킷브레이커가 3시간 넘게 복구되지 않은 장애: 메트릭, 로그, 트레이스를 교차 분석해 외부 서버와 네트워크 문제를 배제하고, <mark>spring-cloud-openfeign의 초기화 경합(ArrayList에 동시에 add되면서 null 요소가 남는 문제)</mark>을 확인했습니다. 전체 서버 로그를 조사해 같은 예외가 배포 때마다 생기고 있었다는 것도 찾았습니다. 공식 저장소의 수정 커밋이 당시 최신 릴리스(5.0.2)에 들어가지 않은 것을 확인하고, 미리 초기화하는 임시 조치를 배포했습니다.
+          - 일부 검색 서버가 알람 없이 '결과 없음'만 응답한 장애: 스레드 덤프를 분석해 서버 기동 중 두 스레드가 jasypt 내부 락을 반대 순서로 잡아 생긴 교착을 찾았습니다. 릴리스 노트상 수정된 버전(3.0.4)의 바이트코드에도 락이 남아 있는 것을 확인하고 3.0.5로 핫픽스했습니다.
+          - 서버 한 대만 느려진 장애: 정상 서버와 diff flame graph로 비교해 HTTP 커넥션 풀 경합이 4.5배 높은 증상을 찾았고, Loki 로그와 서킷 상태를 근거로 원인을 네트워크 일시 장애로 추정했습니다.
+          - 분산 IP 스크래핑으로 부하가 몰린 장애: 정렬 로직의 정규식 병목을 없애고 응답을 캐싱해 <mark>API 호출을 전일 대비 약 93% 줄였습니다</mark>.
 
-          __검색 모니터링과 관측성 구축__
-          - Tempo, Loki, Grafana, WhaTap을 통합한 모니터링 구축 — MDC 기반 요청 추적 로그, 외부 API 응답 시간 분포 지표, timeout 로그 분리를 더해 운영 이슈 탐지 시간을 크게 단축
-          - 상시 프로파일링을 에이전트 방식에서 SDK 방식으로 전환 — root 권한 없이 동작하고, 트레이스와 프로파일을 연결해 볼 수 있도록 개선
+          __검색 로그 실시간 분석 파이프라인 (설계부터 운영까지 단독)__
+          - 라벨 조합이 너무 많아 Prometheus로는 집계하기 어려웠던 '검색 결과 없음' 키워드 순위와 영역별 노출, 클릭, CTR을 Kafka Streams(윈도우 집계, 노출과 클릭 스트림 조인)와 StarRocks로 집계합니다.
+          - Rule 메시지만 발행하면 배포 없이 수집 대상을 바꿀 수 있게 설계했고, Rule 일부를 읽지 못해도 나머지 Rule로 계속 동작합니다.
+          - 사용자 기기의 시계가 틀려 미래 시각에 집계가 쌓이던 문제는 서버 수신 시각 기준 집계로 고쳤고, 스팸 키워드 인코딩 때문에 유니크 키 길이를 넘어 집계 값이 null로 적재되던 문제도 원인을 찾아 수정했습니다.
+          - Kafka Streams 클러스터 구성, 롤링 배포와 배포 검증, JMX 지표의 Prometheus 연동을 스크립트로 자동화하고 Grafana 대시보드와 Slack 알림을 구성했습니다.
 
-          __실험과 운영 플랫폼 풀스택__
-          - A/B 실험 플랫폼 개선: 외부 실험 플랫폼 API 의존을 KV 캐시로 점진적으로 걷어내고 트래픽 배분, 시뮬레이터, 실험 아카이브 구축 — 랭킹과 노출 실험 <mark>20건 이상 세팅 및 운영</mark> (랭킹 파라미터는 검색품질팀과 협업)
-          - 운영 트래픽 복제(Traffic Shadowing) 시스템: 운영 트래픽을 복제해 새 구성에 그대로 흘려보내며 검증하는 도구를 어드민부터 에이전트까지 구축 — 인프라 축소 전 안전성 검증 수단으로 활용
-          - 검색 운영 어드민(Kotlin/Spring + React) 개발 및 운영 — A/B 실험 트래픽 배분 자동화, 미노출 상품 CS의 Jira 티켓 자동 생성, 검색 운영 설정 관리 등 반복 운영 업무를 웹에서 처리할 수 있도록 구성
-          - 어드민 인증을 사번 기반으로 전환하고, 운영 API 디버그 모드는 사내 IP 화이트리스트로 접근 제한
+          __관측성__
+          - Tempo, Loki, Grafana, WhaTap을 묶어 모니터링을 구성하고 MDC 기반 요청 추적 로그, 외부 API 응답 시간 분포 지표, timeout 로그 분리를 추가했습니다.
+          - 상시 프로파일링을 에이전트 방식에서 SDK 방식으로 바꿔 root 권한 없이 동작하고 트레이스와 프로파일을 함께 볼 수 있게 했습니다. CPU, 메모리 할당, mutex 상위 지점의 운영 기준선을 정리한 가이드도 작성했습니다.
 
-          __검색 서비스 및 기능 개발__
-          - 통합검색 페이지 하이브리드 개편 — 검색 결과 화면의 전체 구성과 노출 정책을 새로 설계하고, 서비스 영향 없이 단계적으로 전환 완료
-          - 오픈딜, 마트 등 전문관(버티컬) 검색 개발, 검색엔진 전환 과정에서 <mark>레거시 코드 약 1,900줄 제거</mark>
-          - 신규 검색 탭 API 구축(탭 헤더 병렬 호출과 캐시 적용), SEO 크롤러 대응 noindex 판정 API 개발, URL 인코딩 처리 표준화
+          __검색 기능과 코드 품질__
+          - 검색엔진 쿼리 조립 방식을 Map에서 타입 DTO로 바꿨습니다. 신구 경로의 결과를 비교하는 하네스로 동일함을 확인한 뒤 구 경로를 제거해 <mark>약 3,700줄을 삭제</mark>했고, 이후에는 골든 테스트로 회귀를 막고 있습니다.
+          - 통합검색 페이지 하이브리드 개편에서 리스팅 구조를 재구성했고(176개 파일), 이후 결과 없음 리다이렉트와 키워드 전처리 등을 보완했습니다.
+          - 최대할인가 계산을 검색 응답 경로에서 분리해 도메인별 Decorator 패턴의 전용 API와 TTL 캐시, 워밍, Fallback을 적용하고 Micrometer 지표를 붙였습니다. 이 API의 <mark>호출량이 약 90% 줄었습니다</mark>.
+          - 최상단 컬렉션 배치를 규칙 엔진으로 바꾸고, 하드코딩되어 있던 고정 배치와 최상단 광고 블록 분할을 규칙으로 옮겼습니다.
+          - AI 검색 컬렉션용 경량 API와 키워드 캐시를 구현했습니다. 7일치 검색 이벤트 1,222만 건으로 TTL 정책을 시뮬레이션해 캐시 대상 기준을 정했습니다. (시뮬레이션 히트율 95.7%)
+          - 오픈딜, 마트 등 전문관 검색을 개발했고, 검색엔진을 전환하면서 <mark>레거시 코드 약 1,900줄을 제거</mark>했습니다.
+          - 신규 검색 탭 API(탭 헤더 병렬 호출, 캐시)와 SEO 크롤러용 noindex 판정 API를 개발하고 URL 인코딩 처리를 정리했습니다.
+          - subList를 수정할 때 나던 ConcurrentModificationException처럼 컬렉션 뷰와 얕은 복사에서 생긴 결함을 방어적 복사로 정리했습니다.
 
-          __개발 생산성과 품질__
-          - 검색 디버깅용 Chrome Extension 개발 — 검색 응답을 후킹해 랭킹 점수를 화면에 바로 표시하고, 영역별 구분과 디버깅 모드 등 다양한 기능으로 개발,기획팀의 디버깅 생산성을 크게 높임
-          - Java Collections의 뷰와 얕은 복사에서 비롯된 결함(subList 수정 시 ConcurrentModificationException 등)을 방어적 복사로 해결
-          - 빌드와 배포 후 테스트가 자동 실행되도록 파이프라인 개선
+          __실험 플랫폼과 운영 도구__
+          - A/B 실험 플랫폼을 개선했습니다. 외부 실험 플랫폼 API 의존을 KV 캐시로 단계적으로 걷어내고 트래픽 배분, 시뮬레이터, 실험 아카이브를 만들었습니다. 랭킹과 노출 실험을 <mark>20건 이상</mark> 세팅하고 운영했습니다.
+          - 검색 운영 어드민(Kotlin/Spring, React)에서 트래픽 복제와 녹화 재생 제어, 사내 계정 인증 전환, A/B 실험과 Jira 연동 기능을 설계하고 구현했습니다.
+          - 운영 API의 디버그 모드에 접근 제한을 적용했습니다.
+          - 검색 디버깅용 Chrome Extension에서 랭킹 점수를 화면에 표시하는 기능과 서버 디버그 모드 연동 기능 등을 개발했습니다.
 
       - layout: left
         title: 11번가
@@ -118,42 +127,41 @@ content:
         caption: 2023.07 ~ 2024.07 (인턴 2023.05 ~ 2023.07)
         link: https://www.11st.co.kr/
         quote: >
-          추천 API, 배치, 어드민, 인프라 개발과 운영. 인턴으로 합류 후 정규 전환, 2025.01까지 유지보수 병행
+          추천 API, 배치, 어드민, 인프라의 개발과 운영. 인턴으로 합류해 정규직으로 전환했고, 2025.01까지 유지보수를 함께 맡았습니다.
         description: | # this will include new lines to allow paragraphs
           __Elasticsearch 성능 및 안정성 개선__
-          - GC 비교 검증 후 G1 채택(CMS vs G1), 노드 역할 분리, 버전업(7.9.1→8.11.3, 약 5천만 건 색인) — <mark>노드 CPU 85% → 37%, ReadTimeout 50% 감소</mark>
-          - ES 커스텀 네이티브 플러그인의 메이저 버전 마이그레이션(ES 7→8, JDK 11→21) 수행
+          - CMS와 G1을 비교 검증해 G1을 채택하고 노드 역할 분리와 버전 업그레이드(7.9.1 → 8.11.3, 약 5천만 건 색인)를 진행해, 노드 CPU 사용률을 <mark>85%에서 37%로</mark> 낮추고 ReadTimeout을 <mark>50%</mark> 줄였습니다.
+          - ES 커스텀 네이티브 플러그인을 메이저 버전에 맞게 마이그레이션했습니다(ES 7 → 8, JDK 11 → 21).
 
           __추천 서비스 안정성과 품질 개선__
-          - hystrix → resilience4j 마이그레이션, 피크 트래픽 기준으로 커넥션 풀 크기를 계산해 분리 — 추천 품질 개선과 함께 <mark>ReadTimeout 85% 감소</mark>
-          - 프로젝트 버전 마이그레이션 및 코드 정리 (JDK 8 → 21, Spring Boot 2.1.2 → 3.2.3, maven → gradle)
-          - 지속적으로 발생하는 NullPointerException 등 예외의 원인을 파악하고 비즈니스 요구사항에 맞도록 핸들링 — 개선 전 대비 error <mark>응답률 99.5% 감소</mark>
-            - 위 과정에서 발생한 로그 [Stacktrace 누락 관련 이슈](https://velog.io/@ddh963963/JVM-Stacktrace-Optimizing)에 대해서 테스트 후(jvm optimization) 결과와 해결 방법을 팀에 공유
+          - hystrix를 resilience4j로 옮기고 피크 트래픽 기준으로 커넥션 풀 크기를 계산해 분리했습니다. 추천 품질 개선 작업과 함께 ReadTimeout을 <mark>85%</mark> 줄였습니다.
+          - 프로젝트 버전을 올리고 코드를 정리했습니다(JDK 8 → 21, Spring Boot 2.1.2 → 3.2.3, maven에서 gradle로 전환).
+          - 반복해서 발생하던 NullPointerException 등 예외의 원인을 찾아 비즈니스 요구사항에 맞게 처리해 에러 응답률을 <mark>99.5%</mark> 줄였습니다.
+            - 이 과정에서 만난 [Stacktrace 누락 이슈](https://velog.io/@ddh963963/JVM-Stacktrace-Optimizing)를 JVM 최적화 옵션으로 재현해 보고 원인과 해결 방법을 팀에 공유했습니다.
 
-          __장애 원인 분석 (2023.09)__
-          - 갤럭시 Z플립5 사전판매 라이브 방송 대용량 트래픽으로 인한 서버 hang 상태 장애 원인 분석 — 장애 재현 및 로그 분석으로 원인을 파악하고, 재발 방지 방법과 관련 내용을 문서화하여 팀내 공유
-          - Feign 기본 설정에 의한 HTTP connection leak(ConnectionRequestTimeout, SocketTimeout 및 resource 반환 코드 점검) 문제로 확인 → 명시적 timeout 강제
-          - 홈 영역 메타 서비스의 OOM 장애 힙덤프 분석 — 로컬 캐시가 TTL 만료 후에도 힙에서 제거되지 않아 발생한 문제임을 확인하고 off-heap 캐시 전환 제안
+          __장애 원인 분석__
+          - 갤럭시 Z플립5 사전판매 라이브 방송 트래픽으로 서버가 hang 상태에 빠진 장애(2023.09): 장애를 재현하고 로그를 분석해 Feign 기본 설정 때문에 timeout이 걸리지 않은 HTTP 커넥션 누수임을 확인했습니다. timeout을 명시적으로 강제하고, 재발 방지 방안을 문서로 정리해 팀에 공유했습니다.
+          - 홈 영역 메타 서비스 OOM 장애: 힙덤프를 분석해 TTL이 지난 로컬 캐시가 힙에서 제거되지 않던 문제를 확인하고 off-heap 캐시 전환을 제안했습니다.
 
           __배치 자동화 및 업무 효율화__
-          - 카탈로그 속성 자동화 매칭 배치 개발: 기존에 인력으로 운영되던 업무를 형태소 분석기와 패턴 매칭으로 카탈로그 이름에서 속성을 자동 추출해 매칭 (약 2.4억 건 조회 규모) — 수작업 <mark>18시간 → 1시간</mark>
-            - no-offset 기반 reader를 구현하여 reader 속도를 기존 대비 약 60% 개선
-          - Hive에서 추천 데이터를 Paging Query로 가져와 Elasticsearch에 적재하는 배치의 병목 지점을 단계별 모니터링으로 파악, Paging → CursorReader 전환으로 배치 속도 <mark>98% 이상 개선 (5시간 → 5분 이내)</mark>
-          - 배치 모니터링 도구 개발: 코드 수정이나 재배포 없이 pointcut을 JVM 옵션/환경변수로 외부에서 주입받아 병목을 모니터링 — 분석 업무 <mark>10분 → 10초</mark>, 팀 전체 업무 효율 향상
-          - Redis, Kafka 통합 관리도구 개발: 분리망 접근과 CLI 환경의 불편함을 웹 기반 도구로 해소 — 조회 업무 <mark>1분 20초 → 10초</mark>, 기존 대비 업무 효율 80% 향상
+          - 카탈로그 속성 자동 매칭 배치를 개발했습니다. 형태소 분석기와 패턴 매칭으로 카탈로그 이름에서 속성을 뽑아 사람이 하던 매칭을 자동화했고(약 2.4억 건 조회), 작업 시간을 <mark>18시간에서 1시간</mark>으로 줄였습니다.
+            - no-offset 방식 reader를 구현해 읽기 속도를 약 60% 개선했습니다.
+          - Hive의 추천 데이터를 Elasticsearch에 적재하는 배치의 병목을 단계별 모니터링으로 찾아 Paging 방식을 CursorReader로 바꿔 적재 시간을 <mark>5시간에서 5분 이내</mark>로 줄였습니다.
+          - 코드 수정이나 재배포 없이 pointcut을 JVM 옵션과 환경변수로 주입해 병목을 측정하는 배치 모니터링 도구를 개발해 분석 시간을 <mark>10분에서 10초</mark>로 줄였습니다.
+          - 분리망 접근과 CLI 사용의 불편을 해소하는 Redis, Kafka 통합 관리 웹 도구를 개발해 조회 시간을 <mark>1분 20초에서 10초</mark>로 줄였습니다.
 
           __신규 추천 영역 및 대고객 서비스 개발__
-          - 신규 추천 영역 상품 ETL 파이프라인 개발 (Hadoop → 배치 → Elasticsearch, 증분/전체 색인 <mark>총 약 5천만 건</mark>)
-          - 슈팅배송, OOTD 추천 API 개발
-          - 추천 MAB(Multi-Armed Bandit) API 성능 테스트로 셔플할 상품의 적정 데이터 개수를 산정하고, 사용법에 대한 가이드를 제공
+          - Hadoop 데이터를 배치로 가공해 Elasticsearch에 색인하는 신규 추천 영역 상품 ETL 파이프라인을 개발했습니다(증분과 전체 색인 <mark>약 5천만 건</mark>).
+          - 슈팅배송, OOTD 추천 API를 개발했습니다.
+          - 추천 MAB(Multi-Armed Bandit) API 성능 테스트로 셔플 대상 상품 수의 적정값을 정하고 사용 가이드를 제공했습니다.
 
           __운영 환경 및 어드민 개선__
-          - 추천 admin staging 환경 구성 — 데이터 검증, 성능 테스트, QA 작업을 릴리즈 배포 전에 안전하게 처리할 수 있는 샌드박스 환경으로 안정적인 운영 기반 마련
-          - 추천 admin 리팩토링: interceptor와 annotation을 활용해 중복 유저 인증 로직 제거, 유저 정보 획득 간소화로 인증 서버 API <mark>호출 빈도 50% 감소</mark>, ajax 예외 공통 모듈로 HTTP 상태 코드별 일관성 있는 동작 개선
-          - 모니터링 설정 코드화: APM 에이전트와 Redis/ES 쿼리 추적 설정을 스크립트로 버전 관리, 배치 모니터링 AOP 도입
+          - 데이터 검증, 성능 테스트, QA를 릴리스 전에 처리할 수 있도록 추천 어드민 staging 환경을 구성했습니다.
+          - 추천 어드민을 리팩토링했습니다. interceptor와 annotation으로 중복 인증 로직을 없애 인증 서버 API 호출을 <mark>50%</mark> 줄였습니다. ajax 예외 처리도 공통 모듈로 묶어 HTTP 상태 코드별 동작을 통일했습니다.
+          - APM 에이전트와 Redis, ES 쿼리 추적 설정을 스크립트로 버전 관리하고 배치 모니터링 AOP를 도입했습니다.
 
           __벡터 검색 기술 검토 (TF, 2024)__
-          - Vector DB 6종 비교 분석(라이선스, 하이브리드 검색, 필터, HNSW, 샤딩)과 kNN 색인 방식(Exact vs Approximate) 검토로 기술 선정 수행
+          - Vector DB 6종을 라이선스, 하이브리드 검색, 필터, HNSW, 샤딩 기준으로 비교하고 kNN 색인 방식(Exact, Approximate)을 검토해 기술 선정에 참여했습니다.
 
   - title: Projects # Title for the section
     layout: list # Type of content section (list/text)
@@ -167,13 +175,13 @@ content:
             icon: fab fa-github
             url: https://github.com/f-lab-edu/electronics-used-trading-market
         quote: >
-          중고 전자 거래 프로젝트
+          중고 전자제품 거래 프로젝트
         description: | # this will include new lines to allow paragraphs
-          - [6,700 만 건 상품 검색 기능을 MySQL 인덱스 튜닝 및 ELK 도입을 통해 기존 검색 속도보다 약 **90%** 이상 개선](https://www.notion.so/Electronics-used-trading-market-24e6d21dde514c478bb5eee583dae0d4?pvs=21)
-          - [애플리케이션 배포 시 발생하는 다운타임을 롤링 배포를 통해 무중단 상태로 개선]
-          - Scale-Out 으로 인한 Session 동기화 문제 Redis Session Storage를 이용해서 해결
-          - [Redis, MySQL 조회 성능 및 가용성 확보를 위해 Cluster와 Replication를 통해 분산 및 HA 환경 구성](https://github.com/f-lab-edu/electronics-used-trading-market/issues/62)
-          - 실시간 채팅 API 개발
+          - [6,700만 건 상품 검색을 MySQL 인덱스 튜닝과 ELK 도입으로 기존보다 약 90% 이상 빠르게 개선했습니다](https://www.notion.so/Electronics-used-trading-market-24e6d21dde514c478bb5eee583dae0d4?pvs=21)
+          - 롤링 배포를 적용해 배포 중 다운타임을 없앴습니다.
+          - Scale-Out 이후 생긴 세션 동기화 문제를 Redis Session Storage로 해결했습니다.
+          - [Redis, MySQL의 Cluster와 Replication 구성해 조회 성능과 가용성을 확보했습니다](https://github.com/f-lab-edu/electronics-used-trading-market/issues/62)
+          - 실시간 채팅 API를 개발했습니다.
 
   - title: Awards
     layout: text
@@ -192,10 +200,10 @@ content:
           Kafka, Kafka Streams, Elasticsearch, Redis, Caffeine, MySQL, Oracle, StarRocks
       - title: Observability & Testing
         description: |
-          Grafana, Prometheus, Loki, Tempo, Pyroscope, WhaTap, JFR, async-profiler, k6, GoReplay
+          Grafana, Prometheus, Loki, Tempo, Pyroscope, WhaTap, JFR, async-profiler, k6, GoReplay, Kotest
       - title: ETC
         description: |
-          Docker, Git, Jenkins, Nginx
+          Docker, Git, Jenkins, Nginx, Claude Code
 
 # Footer
 #footer_show_references: true
